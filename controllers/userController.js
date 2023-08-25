@@ -1,6 +1,5 @@
-const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 

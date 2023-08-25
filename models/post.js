@@ -9,4 +9,10 @@ const PostSchema = new Schema({
   posted: { type: Boolean, default: false },
 });
 
+PostSchema.virtual("date").get(function () {
+  return this.timestamp
+    ? DateTime.fromJSDate(this.timestamp).toLocaleString(DateTime.DATE_MED)
+    : "";
+});
+
 module.exports = mongoose.model("Post", PostSchema);

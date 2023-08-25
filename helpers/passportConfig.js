@@ -30,7 +30,7 @@ passport.use(
       jwtFromRequest: JWTExtract.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.SECRET,
     },
-    (jwt_payload, done) => {
+    function (jwt_payload, done) {
       if (jwt_payload) {
         return done(null, jwt_payload.id);
       }
