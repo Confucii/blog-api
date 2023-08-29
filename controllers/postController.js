@@ -5,15 +5,29 @@ const passport = require("passport");
 const Comment = require("../models/comment");
 
 exports.getPosts = asyncHandler(async (req, res) => {
-  const allPosts = await Post.find();
+  let allPosts = await Post.find({ posted: true }, "title timestamp");
+
+  allPosts = allPosts.map((post) => {
+    return { ...post._doc, date: post.date };
+  });
 
   res.status(200).json(allPosts);
 });
 
 exports.getPost = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.postid);
+  let [post, comments] = await Promise.all([
+    Post.findById(req.params.postid),
+    Comment.find({ post: req.params.postid }, "-post"),
+  ]);
 
-  res.status(200).json(post);
+  let postWithDate = { ...post._doc, date: post.date };
+  if (comments.length > 0) {
+    comments = comments.map((comment) => {
+      return { ...comment._doc, date: comment.date };
+    });
+  }
+
+  res.status(200).json({ post: postWithDate, comments });
 });
 
 exports.postPost = [
@@ -29,6 +43,7 @@ exports.postPost = [
     const post = new Post({
       title: req.body.title,
       text: req.body.text,
+      posted: req.body.posted,
     });
 
     if (!errors.isEmpty()) {
