@@ -5,7 +5,9 @@ const passport = require("passport");
 const Comment = require("../models/comment");
 
 exports.getPosts = asyncHandler(async (req, res) => {
-  let allPosts = await Post.find({ posted: true }, "-text");
+  let allPosts = await Post.find({ posted: true }, "-text")
+    .sort({ timestamp: -1 })
+    .exec();
 
   allPosts = allPosts.map((post) => {
     return { ...post._doc, date: post.date };
@@ -17,7 +19,9 @@ exports.getPosts = asyncHandler(async (req, res) => {
 exports.getPost = asyncHandler(async (req, res) => {
   let [post, comments] = await Promise.all([
     Post.findById(req.params.postid),
-    Comment.find({ post: req.params.postid }, "-post"),
+    Comment.find({ post: req.params.postid }, "-post")
+      .sort({ timestamp: -1 })
+      .exec(),
   ]);
 
   let postWithDate = { ...post._doc, date: post.date };

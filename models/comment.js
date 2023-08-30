@@ -12,7 +12,9 @@ const CommentSchema = new Schema({
 
 CommentSchema.virtual("date").get(function () {
   return this.timestamp
-    ? DateTime.fromJSDate(this.timestamp).toLocaleString(DateTime.DATE_MED)
+    ? DateTime.fromJSDate(this.timestamp).toLocaleString(
+        DateTime.DATETIME_MED_WITH_SECONDS
+      )
     : "";
 });
 
