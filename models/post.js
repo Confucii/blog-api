@@ -7,6 +7,22 @@ const PostSchema = new Schema({
   title: { type: String, required: true },
   text: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
+  colors: {
+    type: [Number],
+    default: () => {
+      return [
+        Math.floor(Math.random() * 256),
+        Math.floor(Math.random() * 256),
+        Math.floor(Math.random() * 256),
+      ];
+    },
+  },
+  deg: {
+    type: Number,
+    default: () => {
+      return Math.floor(Math.random() * 361);
+    },
+  },
   posted: { type: Boolean, default: false },
 });
 

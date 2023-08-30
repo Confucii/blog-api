@@ -10,7 +10,7 @@ exports.getComments = asyncHandler(async (req, res) => {
 });
 
 exports.postComment = [
-  body("text", "Comment should contain at least something")
+  body("text", "Comment should be at least 1 character long")
     .trim()
     .isLength({ min: 1 })
     .escape(),
@@ -18,17 +18,16 @@ exports.postComment = [
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
 
-    const comment = new Comment({
-      author: req.body.author,
-      text: req.body.text,
-      post: req.body.post,
-    });
-
     if (!errors.isEmpty()) {
-      res.json({ comment: comment, errors: errors.array() });
+      res.status(400).json(errors.array());
     } else {
+      const comment = new Comment({
+        author: req.body.author,
+        text: req.body.text,
+        post: req.body.post,
+      });
       await comment.save();
-      res.status(200).json({ message: "Added comment successfully" });
+      res.status(200).json({ message: "Comment added successfully" });
     }
   }),
 ];
@@ -37,6 +36,6 @@ exports.deleteComment = [
   passport.authenticate("jwt", { session: false }),
   asyncHandler(async (req, res) => {
     await Comment.findByIdAndRemove(req.params.commentid);
-    res.status(200).json({ message: "Deleted comment successfully" });
+    res.status(200).json({ message: "Comment deleted successfully" });
   }),
 ];
