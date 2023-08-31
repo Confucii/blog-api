@@ -3,6 +3,7 @@ const { body, validationResult } = require("express-validator");
 const Post = require("../models/post");
 const passport = require("passport");
 const Comment = require("../models/comment");
+const authenticateHelper = require("../helpers/authenticateHelper");
 
 exports.getPosts = asyncHandler(async (req, res) => {
   let allPosts = await Post.find({ posted: true }, "-text")
@@ -35,7 +36,9 @@ exports.getPost = asyncHandler(async (req, res) => {
 });
 
 exports.postPost = [
-  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    authenticateHelper.jwtHandler(req, res, next);
+  },
   body("title", "Title should be at least 5 characters")
     .trim()
     .isLength({ min: 5 })
@@ -43,7 +46,7 @@ exports.postPost = [
   body("text").trim().escape(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
-
+    console.log(req.user);
     if (!errors.isEmpty()) {
       res.status(400).json({ errors: errors.array() });
     } else {
