@@ -6,9 +6,7 @@ const Comment = require("../models/comment");
 const authenticateHelper = require("../helpers/authenticateHelper");
 
 exports.getPosts = asyncHandler(async (req, res) => {
-  let allPosts = await Post.find({ posted: true }, "-text")
-    .sort({ timestamp: -1 })
-    .exec();
+  let allPosts = await Post.find().sort({ timestamp: -1 }).exec();
 
   allPosts = allPosts.map((post) => {
     return { ...post._doc, date: post.date };
@@ -46,7 +44,6 @@ exports.postPost = [
   body("text").trim().escape(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
-    console.log(req.user);
     if (!errors.isEmpty()) {
       res.status(400).json({ errors: errors.array() });
     } else {
