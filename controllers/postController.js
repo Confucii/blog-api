@@ -41,11 +41,14 @@ exports.postPost = [
     .trim()
     .isLength({ min: 5 })
     .escape(),
-  body("text").trim().escape(),
+  body("text", "Text should be at least 1 character")
+    .isLength({ min: 1 })
+    .trim()
+    .escape(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
+      res.status(400).json(errors.array());
     } else {
       const post = new Post({
         title: req.body.title,
@@ -60,17 +63,20 @@ exports.postPost = [
 
 exports.updatePost = [
   passport.authenticate("jwt", { session: false }),
-  body("title")
+  body("title", "Title should be at least 5 characters")
     .trim()
     .isLength({ min: 5 })
     .withMessage("Title should be at least 5 characters long")
     .escape(),
-  body("text").trim().escape(),
+  body("text", "Text should be at least 1 character")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
+      res.status(400).json(errors.array());
     } else {
       await Post.findByIdAndUpdate(req.params.postid, {
         title: req.body.title,
