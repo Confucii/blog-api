@@ -76,6 +76,7 @@ exports.updatePost = [
         title: req.body.title,
         text: req.body.text,
         posted: req.body.posted,
+        ...(req.body.posted === "true" && { timestamp: Date.now() }),
       });
       res.status(200).json({ message: "Post updated successfully" });
     }
