@@ -1,11 +1,23 @@
 const mongoose = require("mongoose");
 const { DateTime } = require("luxon");
+const createDOMPurify = require("dompurify");
+const { JSDOM } = require("jsdom");
+const showdown = require("showdown");
+
+const window = new JSDOM("").window;
+const DOMPurify = createDOMPurify(window);
+
+const converter = new showdown.Converter();
 
 const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
   title: { type: String, required: true },
-  text: { type: String, required: true },
+  text: {
+    type: String,
+    required: true,
+    set: (val) => DOMPurify.sanitize(converter.makeHtml(val)),
+  },
   timestamp: { type: Date, default: Date.now },
   colors: {
     type: [Number],

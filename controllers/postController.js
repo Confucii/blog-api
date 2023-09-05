@@ -43,8 +43,7 @@ exports.postPost = [
     .escape(),
   body("text", "Text should be at least 1 character")
     .isLength({ min: 1 })
-    .trim()
-    .escape(),
+    .trim(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -70,8 +69,7 @@ exports.updatePost = [
     .escape(),
   body("text", "Text should be at least 1 character")
     .trim()
-    .isLength({ min: 1 })
-    .escape(),
+    .isLength({ min: 1 }),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
 
