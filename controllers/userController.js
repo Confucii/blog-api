@@ -14,5 +14,8 @@ exports.logout = asyncHandler(async (req, res, next) => {
   res
     .status(200)
     .clearCookie("token", { sameSite: "none", secure: true })
-    .json({ logout: true });
+    .json({
+      logout: true,
+      auth: `auth=true; Max-Age=${0}; SameSite=None; Secure`,
+    });
 });
