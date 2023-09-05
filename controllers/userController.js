@@ -11,6 +11,8 @@ exports.login = [
 ];
 
 exports.logout = asyncHandler(async (req, res, next) => {
-  res.statusMessage = "logged out";
-  res.status(200).clearCookie("token", { sameSite: "none" }).send();
+  res
+    .status(200)
+    .clearCookie("token", { sameSite: "none", secure: true })
+    .json({ logout: true });
 });
