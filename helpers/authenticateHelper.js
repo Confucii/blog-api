@@ -16,8 +16,17 @@ exports.loginHandler = asyncHandler(async (req, res, next) => {
 
     return res
       .status(200)
-      .cookie("token", token, { httpOnly: true, maxAge: 60 * 60 * 1000 })
-      .cookie("auth", true, { maxAge: 60 * 60 * 1000 })
+      .cookie("token", token, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 1000,
+        sameSite: "none",
+        secure: true,
+      })
+      .cookie("auth", true, {
+        maxAge: 60 * 60 * 1000,
+        sameSite: "none",
+        secure: true,
+      })
       .send();
   })(req, res, next);
 });
