@@ -8,6 +8,10 @@ This project is a comprehensive blogging system consisting of three main parts: 
 
 ### [Client Repo](https://github.com/Confucii/blog-client)
 
+![Client layout image](https://raw.githubusercontent.com/Confucii/confucii/main/images/client.gif)
+
+![CMS layout image](https://raw.githubusercontent.com/Confucii/confucii/main/images/cms.gif)
+
 ## Description
 
 The Blog API is the backbone of the entire system, responsible for handling data related to users, posts, and comments. It is built using MongoDB as the database and Express.js as the server framework. The API employs the following key features:
