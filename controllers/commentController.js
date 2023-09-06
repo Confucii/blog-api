@@ -12,9 +12,8 @@ exports.getComments = asyncHandler(async (req, res) => {
 exports.postComment = [
   body("text", "Comment should be at least 1 character long")
     .trim()
-    .isLength({ min: 1 })
-    .escape(),
-  body("author").trim().escape(),
+    .isLength({ min: 1 }),
+  body("author").trim(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
 

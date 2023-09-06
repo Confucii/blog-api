@@ -39,8 +39,7 @@ exports.postPost = [
   },
   body("title", "Title should be at least 5 characters")
     .trim()
-    .isLength({ min: 5 })
-    .escape(),
+    .isLength({ min: 5 }),
   body("text", "Text should be at least 1 character")
     .isLength({ min: 1 })
     .trim(),
@@ -65,8 +64,7 @@ exports.updatePost = [
   body("title", "Title should be at least 5 characters")
     .trim()
     .isLength({ min: 5 })
-    .withMessage("Title should be at least 5 characters long")
-    .escape(),
+    .withMessage("Title should be at least 5 characters long"),
   body("text", "Text should be at least 1 character")
     .trim()
     .isLength({ min: 1 }),

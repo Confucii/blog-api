@@ -12,7 +12,11 @@ const converter = new showdown.Converter();
 const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
-  title: { type: String, required: true },
+  title: {
+    type: String,
+    required: true,
+    set: (val) => DOMPurify.sanitize(val),
+  },
   text: {
     type: String,
     required: true,
